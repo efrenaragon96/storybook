@@ -23,7 +23,7 @@ export interface Test {
 }
 
 interface InjectedProps {
-  tests?: Test[];
+  tests?: Test[] | null;
 }
 
 export interface HocProps {
@@ -34,12 +34,16 @@ export interface HocProps {
 export interface HocState {
   kind?: string;
   storyName?: string;
-  tests?: Test[];
+  tests?: Test[] | null;
 }
 
 export const provideTests = (Component: ComponentType<InjectedProps>) =>
   class TestProvider extends ReactComponent<HocProps, HocState> {
     state: HocState = {};
+
+    mounted = false;
+
+    stopListeningOnStory: () => void = () => {};
 
     static defaultProps = {
       active: false,
@@ -70,10 +74,6 @@ export const provideTests = (Component: ComponentType<InjectedProps>) =>
     onAddTests = ({ kind, storyName, tests }: HocState) => {
       this.setState({ kind, storyName, tests });
     };
-
-    mounted: boolean;
-
-    stopListeningOnStory: () => void;
 
     render() {
       const { active } = this.props;

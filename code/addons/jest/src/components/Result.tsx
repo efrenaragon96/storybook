@@ -1,33 +1,42 @@
 import React, { Fragment, useState } from 'react';
+import type { CSSObject } from '@storybook/theming';
 import { styled, themes, convert } from '@storybook/theming';
 import { Icons } from '@storybook/components';
 import Message from './Message';
 
-const Wrapper = styled.div<{ status: string }>(({ theme, status }) => ({
-  display: 'flex',
-  width: '100%',
-  borderTop: `1px solid ${theme.appBorderColor}`,
-  '&:hover': {
-    background: status === `failed` ? theme.background.hoverable : null,
-  },
-}));
+const Wrapper = styled.div<{ status: string }>(({ theme, status }) => {
+  const style: CSSObject = {
+    display: 'flex',
+    width: '100%',
+    borderTop: `1px solid ${theme.appBorderColor}`,
+    '&:hover': {
+      background: status === `failed` ? theme.background.hoverable : '',
+    },
+  };
 
-const HeaderBar = styled.div<{ status: string }>(({ theme, status }) => ({
-  padding: theme.layoutMargin,
-  paddingLeft: theme.layoutMargin - 3,
-  background: 'none',
-  color: 'inherit',
-  textAlign: 'left',
-  cursor: status === `failed` ? 'pointer' : null,
-  borderLeft: '3px solid transparent',
-  width: '100%',
-  display: 'flex',
+  return style;
+});
 
-  '&:focus': {
-    outline: '0 none',
-    borderLeft: `3px solid ${theme.color.secondary}`,
-  },
-}));
+const HeaderBar = styled.div<{ status: string }>(({ theme, status }) => {
+  const style: CSSObject = {
+    padding: theme.layoutMargin,
+    paddingLeft: theme.layoutMargin - 3,
+    background: 'none',
+    color: 'inherit',
+    textAlign: 'left',
+    cursor: status === `failed` ? 'pointer' : '',
+    borderLeft: '3px solid transparent',
+    width: '100%',
+    display: 'flex',
+
+    '&:focus': {
+      outline: '0 none',
+      borderLeft: `3px solid ${theme.color.secondary}`,
+    },
+  };
+
+  return style;
+});
 
 const Icon = styled(Icons)(({ theme }) => ({
   height: 10,
@@ -40,8 +49,8 @@ const Icon = styled(Icons)(({ theme }) => ({
   display: 'inline-flex',
 }));
 
-const capitalizeFirstLetter = (text: string) => {
-  return text.charAt(0).toUpperCase().concat(text.slice(1));
+const capitalizeFirstLetter = (text?: string) => {
+  return text?.charAt(0).toUpperCase().concat(text.slice(1));
 };
 
 interface ResultProps {

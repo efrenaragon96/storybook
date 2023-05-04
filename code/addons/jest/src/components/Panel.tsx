@@ -46,16 +46,16 @@ const SuiteHead = styled.div({
 const UnstyledSuiteTotals: FC<{
   result: Test['result'];
   className?: string;
-  width: number;
+  width?: number;
 }> = ({ result, className, width }) => (
   <div className={className}>
     <Fragment>
-      {width > 325 && result.assertionResults ? (
+      {width && width > 325 && result.assertionResults ? (
         <div>
           {result.assertionResults.length} {result.assertionResults.length > 1 ? `tests` : `test`}
         </div>
       ) : null}
-      {width > 280 && result.endTime && result.startTime ? (
+      {width && width > 280 && result.endTime && result.startTime ? (
         <div>
           {result.endTime - result.startTime}
           ms
@@ -114,7 +114,7 @@ const getColorByType = (type: string) => {
     case StatusTypes.TODO_TYPE:
       return convert(themes.light).color.purple;
     default:
-      return null;
+      return undefined;
   }
 };
 
@@ -133,7 +133,7 @@ const TestPanel: FC<{ test: Test }> = ({ test }) => {
     <section ref={ref}>
       <SuiteHead>
         <SuiteTotals {...{ result, width }} />
-        {width > 240 ? (
+        {width && width > 240 ? (
           <ProgressWrapper>
             {sortedTestsByCount.map((entry: any) => {
               return (
@@ -261,7 +261,7 @@ const Content = styled(({ tests, className }: ContentProps) => (
 });
 
 interface PanelProps {
-  tests: null | Test[];
+  tests?: null | Test[];
 }
 
 const Panel = ({ tests }: PanelProps) => (
